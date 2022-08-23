@@ -16,6 +16,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     [SerializeField] private Animator animator;
+
+    [SerializeField] private GameObject bulletPrefab;
+
+    [SerializeField] private GameObject firePoint;
+    
+    
     
     private float dirX = 0;
 
@@ -23,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Jump();
         FlipSprite();
+        Fire();
     }
 
     private void FixedUpdate()
@@ -74,6 +81,18 @@ public class PlayerMovement : MonoBehaviour
             if (dirX == 0) return;
             
             transform.localScale = new Vector2(scaleX,transform.localScale.y);
+        }
+    }
+
+    private void Fire()
+    {
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            animator.SetTrigger("fire");
+            
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.transform.position,firePoint.transform.rotation);
+
+            bullet.GetComponent<Bullet>().speed *= transform.localScale.x;
         }
     }
 

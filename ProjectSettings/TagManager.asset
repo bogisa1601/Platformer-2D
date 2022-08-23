@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Player
   - Ground
-  - 
+  - Background
   - 
   - 
   - 
@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3853857227
+    locked: 0
   - name: Player
     uniqueID: 3668513501
+    locked: 0
+  - name: Bullets
+    uniqueID: 2236138919
+    locked: 0
+  - name: Ground
+    uniqueID: 3951216939
     locked: 0
