@@ -14,16 +14,28 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private BoxCollider2D groundCollider;
 
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask climbingLayer;
 
     [SerializeField] private Animator animator;
 
     [SerializeField] private GameObject bulletPrefab;
 
     [SerializeField] private GameObject firePoint;
-    
-    
-    
+   
     private float dirX = 0;
+    private float dirY = 0;
+
+    [SerializeField] private float fireRate;
+    private float nextFire;
+
+    [SerializeField] private float climbingSpeed;
+
+    private float _startingGravitySacale = 0;
+
+    private void Start()
+    {
+        _startingGravitySacale = rb2D.gravityScale;
+    }
 
     void Update()
     {
@@ -35,11 +47,13 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Climb();
     }
 
     private void Move()
     {
         dirX = Input.GetAxis("Horizontal");
+        dirY = Input.GetAxis("Vertical");
 
         Animate();
         
@@ -86,14 +100,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void Fire()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time > nextFire)
         {
+            nextFire = Time.time + fireRate;
+            
             animator.SetTrigger("fire");
             
             GameObject bullet = Instantiate(bulletPrefab, firePoint.transform.position,firePoint.transform.rotation);
 
             bullet.GetComponent<Bullet>().speed *= transform.localScale.x;
         }
+    }
+
+    private void Climb()
+    {
+
+        if (!cc2D.IsTouchingLayers(climbingLayer))
+        {
+            rb2D.gravityScale = _startingGravitySacale;
+            return;
+        }
+
+        Vector2 climbVelocity = new Vector2(rb2D.velocity.x, dirY * climbingSpeed);
+
+        rb2D.velocity = climbVelocity;
+
+        rb2D.gravityScale = 0;
     }
 
 }

@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
     {
         //rb2D.velocity = new Vector2(speed, 0);
         rb2D.velocity = Vector2.right * speed;
+
+        Destroy(gameObject,2.5f);
     }
 
 }
