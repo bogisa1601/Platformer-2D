@@ -9,11 +9,16 @@ public class Enemy : MonoBehaviour
     [field: SerializeField] public int Health { get; set; }
     [field: SerializeField] public int Damage { get; set; }
 
+    [SerializeField] private CircleCollider2D circleCollider2D;
+    
     [SerializeField] private BoxCollider2D wallCheckCollider;
 
     [SerializeField] private LayerMask groundLayer;
     
     [SerializeField] private float moveSpeed;
+
+    [SerializeField] private Vector2 pushForce;
+    
 
     public int MaxHealth { get; private set; }
 
@@ -35,14 +40,17 @@ public class Enemy : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.TryGetComponent(out Player player))
+        if (col.gameObject.TryGetComponent(out Health health))
         {
-            player.Health -= Damage;
-
-            if (player.Health <= 0)
+            if (col.transform.position.y - transform.position.y >= circleCollider2D.bounds.size.y / 2)
             {
-                Destroy(player.gameObject);
+                Destroy(gameObject);
+                return;
             }
+
+            health.ModifyHealth(-Damage);
+            
+            health.GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.localScale.x * pushForce.x,pushForce.y),ForceMode2D.Impulse);
         }
     }
 }

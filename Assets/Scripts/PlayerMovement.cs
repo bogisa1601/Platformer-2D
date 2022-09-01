@@ -60,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 velocity = new Vector2(dirX * moveSpeed * Time.fixedDeltaTime, rb2D.velocity.y);
 
         rb2D.velocity = velocity;
+
     }
 
     private void Jump()
