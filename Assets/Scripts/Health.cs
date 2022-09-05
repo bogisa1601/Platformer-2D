@@ -7,44 +7,84 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     [field: SerializeField] public Slider HealthSlider { get; private set; }
+    
     [field: SerializeField] public float MaxHealth { get; private set; }
+    
+    [field: SerializeField] public float LerpDuration { get; private set; }
 
-    private float _currentHealth;
+    [field: SerializeField] public float CurrentHealth { get; private set; }
 
     private void Start()
     {
-        _currentHealth = MaxHealth;
+        CurrentHealth = MaxHealth;
 
-        HealthSlider.value = _currentHealth / MaxHealth;
+        HealthSlider.value = CurrentHealth / MaxHealth;
     }
     
     public void ModifyHealth(float amount)
     {
-        _currentHealth += amount;
+        CurrentHealth += amount;
 
         ConfigCurrentHealth();
 
-        HealthSlider.value = _currentHealth / MaxHealth;
+        //HealthSlider.value = _currentHealth / MaxHealth;
 
-        if (_currentHealth <= 0)
+        LerpHealth(HealthSlider.value, CurrentHealth / MaxHealth);
+        
+        if (CurrentHealth <= 0)
         {
-            Destroy(gameObject);
+            Destroy(gameObject,LerpDuration);
+            GetComponent<PlayerMovement>().enabled = false;
         }
     }
     
     private void ConfigCurrentHealth()
     {
-        if (_currentHealth >= MaxHealth)
+        if (CurrentHealth >= MaxHealth)
         {
-            _currentHealth = MaxHealth;
+            CurrentHealth = MaxHealth;
             return;
         }
 
-        if (_currentHealth < 0)
+        if (CurrentHealth < 0)
         {
-            _currentHealth = 0;
+            CurrentHealth = 0;
         }
     }
-    
+
+    private void LerpHealth(float from, float to)
+    {
+        if (to <= 0)
+        {
+            to -= 0.1f;
+        }
+        
+        StartCoroutine(LerpHealthInternal());
+
+        IEnumerator LerpHealthInternal()
+        {
+            float timeElapsed = 0;
+            
+            while (timeElapsed < LerpDuration)
+            {
+                HealthSlider.value = Mathf.Lerp(from, to, timeElapsed / LerpDuration);
+
+                if (from < to)
+                {
+                    CurrentHealth = HealthSlider.value * MaxHealth;
+                }
+                
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            LerpHealth(HealthSlider.value, 1);
+        }
+    }
+
+
+
+
 
 }

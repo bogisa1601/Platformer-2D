@@ -2247,7 +2247,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7783505, y: 1}
+    m_SensorSize: {x: 1.7775091, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2918,6 +2918,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <HealthSlider>k__BackingField: {fileID: 729037819}
   <MaxHealth>k__BackingField: 500
+  <LerpDuration>k__BackingField: 1
+  <CurrentHealth>k__BackingField: 0
 --- !u!1 &455684169314678505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3309,11 +3311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3817063186588738585, guid: b6c55735bcdcf8e4db67d48d165e1139, type: 3}
       propertyPath: pushForce.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3817063186588738585, guid: b6c55735bcdcf8e4db67d48d165e1139, type: 3}
       propertyPath: pushForce.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3817063186588738585, guid: b6c55735bcdcf8e4db67d48d165e1139, type: 3}
       propertyPath: circleCollider2D

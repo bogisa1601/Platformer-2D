@@ -42,6 +42,9 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         FlipSprite();
         Fire();
+        AnimateJump();
+        ClimbAnimation();
+        FreezeClimbingAnimation();
     }
 
     private void FixedUpdate()
@@ -55,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         dirX = Input.GetAxis("Horizontal");
         dirY = Input.GetAxis("Vertical");
 
-        Animate();
+        AnimateMovement();
         
         Vector2 velocity = new Vector2(dirX * moveSpeed * Time.fixedDeltaTime, rb2D.velocity.y);
 
@@ -70,16 +73,28 @@ public class PlayerMovement : MonoBehaviour
             Vector2 velocity = new Vector2(0, jumpStrength);
 
             rb2D.velocity += velocity;
-        } 
+            return;
+        }
     }
 
-    private void Animate()
+    private void AnimateJump()
     {
-        if (Mathf.Abs(dirX) > 0)
+        if (groundCollider.IsTouchingLayers(groundLayer) == false && groundCollider.IsTouchingLayers(climbingLayer) == false)
+        {
+            animator.SetBool("isInAir",true);
+            return;
+        }
+        
+        animator.SetBool("isInAir",false);
+    }
+
+    private void AnimateMovement()
+    {
+        if (Mathf.Abs(dirX) > 0 && groundCollider.IsTouchingLayers(groundLayer))
         {
             animator.SetBool("isRunning",true);
             return;
-        }
+        } 
         animator.SetBool("isRunning",false);
     }
 
@@ -127,6 +142,35 @@ public class PlayerMovement : MonoBehaviour
         rb2D.velocity = climbVelocity;
 
         rb2D.gravityScale = 0;
+    }
+
+    private void ClimbAnimation()
+    {
+        if (!cc2D.IsTouchingLayers(climbingLayer))
+        {
+            animator.SetBool("isClimbing", false);
+            return;
+        }
+        animator.SetBool("isClimbing", true);
+    }
+
+    private void FreezeClimbingAnimation()
+    {
+        if (!cc2D.IsTouchingLayers(climbingLayer))
+        {
+            animator.enabled = true;
+            animator.speed = 1;
+            return;
+        }
+
+        if (cc2D.IsTouchingLayers(climbingLayer) && dirY == 0)
+        {
+            animator.SetBool("isClimbing", true);
+            animator.speed = 0;
+            return;
+        }
+        animator.SetBool("isClimbing", true);
+        animator.speed = 1;
     }
 
 }
