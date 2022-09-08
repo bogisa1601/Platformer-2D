@@ -32,12 +32,25 @@ public class PlayerMovement : MonoBehaviour
 
     private float _startingGravitySacale = 0;
 
+    [SerializeField] private float dashSpeed;
+
+    [SerializeField] private bool isDashing = false;
+
+    [SerializeField] private bool canUseDash = true;
+    
+    [SerializeField] private float dashDuration;
+    
+    [SerializeField] private float dashCoolDown;
+
+    private float dash = 0;
+    
     private void Start()
     {
         _startingGravitySacale = rb2D.gravityScale;
+        dashSpeed += moveSpeed;
     }
 
-    void Update()
+    private void Update()
     {
         Jump();
         FlipSprite();
@@ -50,20 +63,58 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Dash();
         Climb();
     }
 
     private void Move()
     {
+        if (isDashing) return;
+        
         dirX = Input.GetAxis("Horizontal");
         dirY = Input.GetAxis("Vertical");
 
         AnimateMovement();
         
+        Debug.Log("Moving");
+        
         Vector2 velocity = new Vector2(dirX * moveSpeed * Time.fixedDeltaTime, rb2D.velocity.y);
 
         rb2D.velocity = velocity;
+    }
 
+    private void Dash()
+    {
+        if (!canUseDash) return;
+        
+        dash = Input.GetAxis("Dash");
+
+        if (isDashing == true) return;
+        
+        if (dash > 0.5f && isDashing == false)
+        {
+            Debug.Log("Dash started");
+
+            isDashing = true;
+            canUseDash = false;
+
+            rb2D.velocity = Vector2.right * (dirX * dashSpeed * Time.fixedDeltaTime);
+
+            StartCoroutine(ReEnableDash());
+        }
+
+    }
+    
+    private IEnumerator ReEnableDash()
+    {
+        yield return new WaitForSeconds(dashDuration);
+
+        isDashing = false;
+        rb2D.velocity = Vector2.zero;
+        
+        yield return new WaitForSeconds(dashCoolDown);
+
+        canUseDash = true;
     }
 
     private void Jump()
