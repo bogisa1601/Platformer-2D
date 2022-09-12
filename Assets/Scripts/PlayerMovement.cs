@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private BoxCollider2D groundCollider;
 
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask movingGroundLayer;
     [SerializeField] private LayerMask climbingLayer;
 
     [SerializeField] private Animator animator;
@@ -65,6 +66,20 @@ public class PlayerMovement : MonoBehaviour
         Move();
         Dash();
         Climb();
+    }
+
+    private void MovingPlatformHandler()
+    {
+        if (groundCollider.IsTouchingLayers(movingGroundLayer))
+        {
+            /*todo za sledeci cas raycast
+        
+        
+        
+            */
+            return;
+        }
+        
     }
 
     private void Move()

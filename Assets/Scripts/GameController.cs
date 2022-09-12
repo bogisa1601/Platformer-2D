@@ -9,25 +9,25 @@ public class GameController : MonoBehaviour
 
     public static GameController singleton;
 
-    [SerializeField] private TextMeshProUGUI coinAmountText;
-    
-    
+    [field: SerializeField] public TextMeshProUGUI CoinAmountText { get; set; }
+
     private int _currentCoinAmount = 0;
 
     private void Awake()
     {
-        singleton = this;
-    }
-
-    private void Start()
-    {
-        ModifyCoins(0);
+        if (singleton == null)
+        {
+            singleton = this;
+            DontDestroyOnLoad(gameObject);
+            return;
+        }
+        Destroy(gameObject);
     }
 
     public void ModifyCoins(int amount)
     {
         _currentCoinAmount += amount;
 
-        coinAmountText.text = _currentCoinAmount.ToString();
+        CoinAmountText.text = _currentCoinAmount.ToString();
     }
 }
