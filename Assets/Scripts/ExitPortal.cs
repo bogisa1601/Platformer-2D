@@ -16,6 +16,7 @@ public class ExitPortal : MonoBehaviour
         {
             int buildIndex = SceneManager.GetActiveScene().buildIndex;
             Debug.Log("build index: "+buildIndex);
+
             SceneManager.LoadScene("Level "+(SceneManager.GetActiveScene().buildIndex+1));
         }
     }

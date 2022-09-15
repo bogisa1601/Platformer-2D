@@ -11,7 +11,8 @@ public class GameController : MonoBehaviour
 
     [field: SerializeField] public TextMeshProUGUI CoinAmountText { get; set; }
 
-    private int _currentCoinAmount = 0;
+    public int currentCoinAmount = 0;
+    public Player currentActivePlayer;
 
     private void Awake()
     {
@@ -26,8 +27,8 @@ public class GameController : MonoBehaviour
 
     public void ModifyCoins(int amount)
     {
-        _currentCoinAmount += amount;
+        currentCoinAmount += amount;
 
-        CoinAmountText.text = _currentCoinAmount.ToString();
+        CoinAmountText.text = currentCoinAmount.ToString();
     }
 }

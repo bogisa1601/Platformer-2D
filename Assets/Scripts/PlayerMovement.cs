@@ -44,11 +44,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashCoolDown;
 
     private float dash = 0;
-    
+
+    private Vector2 startingScale;
+    private Vector2 modifiedScale;
+
     private void Start()
     {
         _startingGravitySacale = rb2D.gravityScale;
         dashSpeed += moveSpeed;
+
+        startingScale = transform.localScale;
+        modifiedScale = startingScale;
     }
 
     private void Update()
@@ -68,18 +74,37 @@ public class PlayerMovement : MonoBehaviour
         Climb();
     }
 
-    private void MovingPlatformHandler()
+    private void LateUpdate()
     {
-        if (groundCollider.IsTouchingLayers(movingGroundLayer))
+        if (startingScale != modifiedScale)
         {
-            /*todo za sledeci cas raycast
-        
-        
-        
-            */
-            return;
+            //startingScale.x = Mathf.Sin(rb2D.velocity.x);
+            
+            var playerNewScale = startingScale / modifiedScale;
+            transform.localScale = playerNewScale;
         }
-        
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.name.ToLower().Contains("moving platform"))
+        {
+            transform.parent = col.transform;
+
+            modifiedScale = col.transform.localScale;
+        }
+    }
+    
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.name.ToLower().Contains("moving platform"))
+        {
+            transform.parent = null;
+
+            transform.localScale = startingScale;
+            modifiedScale = startingScale;
+
+        }
     }
 
     private void Move()
@@ -90,8 +115,6 @@ public class PlayerMovement : MonoBehaviour
         dirY = Input.GetAxis("Vertical");
 
         AnimateMovement();
-        
-        Debug.Log("Moving");
         
         Vector2 velocity = new Vector2(dirX * moveSpeed * Time.fixedDeltaTime, rb2D.velocity.y);
 
