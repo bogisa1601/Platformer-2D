@@ -48,6 +48,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 startingScale;
     private Vector2 modifiedScale;
 
+    [SerializeField] private float bulletForce;
+
+    [SerializeField] private Transform shootingPoint;
+    
+    
+    private Vector2 trajDir;
+    
+
     private void Start()
     {
         _startingGravitySacale = rb2D.gravityScale;
@@ -61,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Jump();
         FlipSprite();
+        AimWhereMouseIs();
         Fire();
         AnimateJump();
         ClimbAnimation();
@@ -78,11 +87,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (startingScale != modifiedScale)
         {
-            //startingScale.x = Mathf.Sin(rb2D.velocity.x);
-            
             var playerNewScale = startingScale / modifiedScale;
-            transform.localScale = playerNewScale;
+
+            if (rb2D.velocity.x != 0)
+            {
+                playerNewScale.x *= Mathf.Sign(rb2D.velocity.x);
+                transform.localScale = playerNewScale;
+            }
+            
         }
+
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -203,6 +217,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void AimWhereMouseIs()
+    {
+        Vector2 pointA = firePoint.transform.position;
+        Vector2 pointB = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        trajDir = pointB - pointA;
+        
+        firePoint.transform.right = trajDir;
+    }
+
     private void Fire()
     {
         if (Input.GetKey(KeyCode.Mouse0) && Time.time > nextFire)
@@ -211,9 +235,11 @@ public class PlayerMovement : MonoBehaviour
             
             animator.SetTrigger("fire");
             
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.transform.position,firePoint.transform.rotation);
+            GameObject bulletObj = Instantiate(bulletPrefab, shootingPoint.position,firePoint.transform.rotation);
 
-            bullet.GetComponent<Bullet>().speed *= transform.localScale.x;
+            var bullet = bulletObj.GetComponent<Bullet>();
+            
+            bullet.rb2D.velocity = firePoint.transform.right * bulletForce;
         }
     }
 

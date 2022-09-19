@@ -6,54 +6,54 @@ using UnityEngine;
 public class Patrol : MonoBehaviour
 {
 
-    [SerializeField] private List<Transform> patrolPoints;
+    [SerializeField] public List<Transform> patrolPoints;
 
     [SerializeField] private float moveSpeed;
 
-    private void Start()
+    public int currentIndex = 0;
+    
+    public virtual void Start()
     {
         transform.position = patrolPoints[0].position;
         StartPatrol();
     }
 
-    private void StartPatrol()
+    public virtual void StartPatrol()
     {
         StartCoroutine(PatrolLoop());
+    }
+    
+    public IEnumerator PatrolLoop()
+    {
         
-        //local method
-        IEnumerator PatrolLoop()
+        while (gameObject.activeSelf)
         {
-            int index = 0;
-        
-            while (gameObject.activeSelf)
+            if (Mathf.Abs(transform.position.x - patrolPoints[currentIndex].position.x) > Mathf.Epsilon)
             {
-                if (Mathf.Abs(transform.position.x - patrolPoints[index].position.x) > Mathf.Epsilon)
-                {
-                    transform.position = Vector2.MoveTowards(
-                        transform.position,
-                        patrolPoints[index].position,
-                        moveSpeed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    patrolPoints[currentIndex].position,
+                    moveSpeed * Time.deltaTime);
 
-                    yield return null;
-                    
-                    continue;
-                }
-
-                index += 1;
-
-                if (index > patrolPoints.Count - 1)
-                {
-                    index = 0;
-                    patrolPoints.Reverse();
-                }
-            
                 yield return null;
-
+                    
+                continue;
             }
+
+            currentIndex += 1;
+
+            if (currentIndex > patrolPoints.Count - 1)
+            {
+                currentIndex = 0;
+                patrolPoints.Reverse();
+            }
+            
+            yield return null;
+
         }
     }
-
-    private void OnDrawGizmos()
+    
+    public virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         
