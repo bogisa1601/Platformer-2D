@@ -25,4 +25,14 @@ public class Player : MonoBehaviour
         
         SaveDataController.Singleton.SaveGame();
     }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.transform.TryGetComponent(out IDestructible destructible))
+        {
+            destructible.DestroyAndPlayFx();
+            return;
+        }
+        
+    }
 }

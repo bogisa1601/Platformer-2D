@@ -51,10 +51,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bulletForce;
 
     [SerializeField] private Transform shootingPoint;
-    
-    
+
     private Vector2 trajDir;
-    
+
+    [SerializeField] private GameObject lineDotPrefab;
+
+    private List<GameObject> trajectoryPoints = new List<GameObject>();
+
+    [SerializeField] private int pointsCount;
+
+    [SerializeField] private float dotSpacing;
+
 
     private void Start()
     {
@@ -63,6 +70,13 @@ public class PlayerMovement : MonoBehaviour
 
         startingScale = transform.localScale;
         modifiedScale = startingScale;
+/*
+        for (int i = 0; i < pointsCount; i++)
+        {
+            GameObject gob = Instantiate(lineDotPrefab,shootingPoint.transform.position,shootingPoint.transform.rotation);
+            trajectoryPoints.Add(gob);
+        }
+        */
     }
 
     private void Update()
@@ -74,6 +88,23 @@ public class PlayerMovement : MonoBehaviour
         AnimateJump();
         ClimbAnimation();
         FreezeClimbingAnimation();
+        //UpdateTrajPointsPositions();
+    }
+
+    private void UpdateTrajPointsPositions()
+    {
+        for (int i = 0; i < trajectoryPoints.Count; i++)
+        {
+            trajectoryPoints[i].transform.position = TrajPointPos(i * dotSpacing);
+        }
+    }
+
+    public Vector2 TrajPointPos(float t)
+    {
+        Vector2 pos = (Vector2) shootingPoint.transform.position + (trajDir.normalized * bulletForce * t) +
+                      0.5f * Physics2D.gravity * (t * t);
+
+        return pos;
     }
 
     private void FixedUpdate()

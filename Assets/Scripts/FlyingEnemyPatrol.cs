@@ -59,7 +59,7 @@ public class FlyingEnemyPatrol : Patrol
 
                     Vector2 dir = circleCastObjects[i].transform.position - transform.position;
 
-                    bullet.GetComponent<Bullet>().rb2D.velocity = dir * bulletForce;
+                    bullet.GetComponent<EnemyBullet>().rb2D.velocity = dir * bulletForce;
 
                 }
                 
