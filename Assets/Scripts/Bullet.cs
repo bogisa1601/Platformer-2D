@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
         }
         
 /*
-        Enemy enemy = col.gameObject.GetComponent<Enemy>();
+        PatrollingEnemy enemy = col.gameObject.GetComponent<PatrollingEnemy>();
         
         if (enemy != null)
         {
@@ -43,7 +43,7 @@ public class Bullet : MonoBehaviour
         }
 */
 
-        if (col.gameObject.TryGetComponent(out Enemy enemy))
+        if (col.gameObject.TryGetComponent(out PatrollingEnemy enemy))
         {
             enemy.Health -= damage;
 
