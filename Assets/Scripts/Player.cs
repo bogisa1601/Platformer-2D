@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.transform.TryGetComponent(out ICollectable collectable))
+        if (collision.transform.TryGetComponent(out BaseCollectable collectable))
         {
             collectable.Collect(this);
             return;
