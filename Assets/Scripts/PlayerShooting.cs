@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void Fire()
     {
-        if (Input.GetKey(KeyCode.Mouse0) && Time.time > nextFire)
+        if (EventSystem.current.IsPointerOverGameObject() == false && Input.GetKey(KeyCode.Mouse0) && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
 

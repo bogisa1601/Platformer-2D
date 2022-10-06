@@ -6,12 +6,27 @@ public class HealthPotion : BaseCollectable
 {
     [field : SerializeField] public float HealthAmount { get; private set; }
 
+
+
     public override void Collect(Player player)
     {
-        if(player.TryGetComponent(out Health health))
+        Player = player;
+        StoreInInventory();
+    }
+
+    public override void StoreInInventory()
+    {
+       gameObject.SetActive(false);
+        GameplayEvents.RaiseOnAddCollectable(this);
+    }
+
+    public override void Use()
+    {
+        if (Player.TryGetComponent(out Health health))
         {
             health.ModifyHealth(HealthAmount);
             Destroy(gameObject);
+            Debug.Log($"Used Health Potion!!!");
         }
     }
 }

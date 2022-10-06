@@ -14,4 +14,11 @@ public class Coin : BaseCollectable
         Destroy(gameObject);
     }
 
+    public override void StoreInInventory()
+    {
+    }
+
+    public override void Use()
+    { 
+    }
 }
