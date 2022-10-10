@@ -14,41 +14,28 @@ public class EnemyBullet : MonoBehaviour
         Destroy(gameObject,2.5f);
     }
 
+    
 
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Ground"))
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+        if (collision.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
             return;
         }
-        
-/*
-        PatrollingEnemy enemy = col.gameObject.GetComponent<PatrollingEnemy>();
-        
-        if (enemy != null)
+
+        if (collision.gameObject.TryGetComponent(out Health playerHealth))
         {
-            enemy.Health -= damage;
-
-            if (enemy.Health <= 0)
+            playerHealth.ModifyHealth(-damage);
+            if(playerHealth.CurrentHealth <= 0 )
             {
-                Destroy(enemy.gameObject);
+                Destroy(playerHealth.gameObject);
             }
-        }
-*/
-
-        if (col.gameObject.TryGetComponent(out PatrollingEnemy enemy))
-        {
-            enemy.Health -= damage;
-
-            if (enemy.Health <= 0)
-            {
-                Destroy(enemy.gameObject);
-            }
-            
             Destroy(gameObject);
         }
     }
-    
-    
+
+
+
+
 }

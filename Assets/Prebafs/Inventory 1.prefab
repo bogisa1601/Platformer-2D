@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3609906786314213614}
   - component: {fileID: 3609906786314213613}
   - component: {fileID: 3609906786314213612}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ Canvas:
   m_GameObject: {fileID: 3609906786314213618}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 3609906786353875857}
   - component: {fileID: 3609906786353875856}
   - component: {fileID: 3609906786353875863}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: OpenInventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3609906786670127772}
   - component: {fileID: 3609906786670127773}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 3609906786762474054}
   - component: {fileID: 3609906786762474048}
   - component: {fileID: 3609906786762474055}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 3609906787408870226}
   - component: {fileID: 3609906787408870220}
   - component: {fileID: 3609906787408870227}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3609906788015929376}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InventoryFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 4582862522379300775}
   - component: {fileID: 4563989467818935521}
   - component: {fileID: 1791148805292787634}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DragNDropIconImageHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

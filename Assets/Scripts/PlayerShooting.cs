@@ -39,7 +39,7 @@ public class PlayerShooting : MonoBehaviour
 
             var bullet = bulletObj.GetComponent<Bullet>();
 
-            bullet.rb2D.velocity = firePoint.transform.right * BulletForce;
+            bullet.rb2D.velocity = firePoint.transform.right * (transform.localScale.x * BulletForce);
         }
     }
 
@@ -50,6 +50,9 @@ public class PlayerShooting : MonoBehaviour
 
         TrajDir = pointB - pointA;
 
-        firePoint.transform.right = TrajDir;
+        //shootingPoint.transform.right = TrajDir * transform.localScale.x;
+
+
+        firePoint.transform.right = TrajDir * transform.localScale.x;
     }
 }

@@ -8,9 +8,24 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     [field: SerializeField] public int Health { get; set; }
-    
-    
-    //todo damage interface za playera 
+
+
+    private void OnEnable()
+    {
+        GameplayEvents.OnRemoveItemFromInventory += HandleOnRemoveItemFromInventory;
+        
+    }
+
+    private void OnDisable()
+    {
+        GameplayEvents.OnRemoveItemFromInventory -= HandleOnRemoveItemFromInventory;
+    }
+
+    public void HandleOnRemoveItemFromInventory(BaseCollectable collectable)
+    {
+        collectable.gameObject.SetActive(true);
+        collectable.transform.position = new Vector2((transform.position.x + 1 * transform.localScale.x), transform.position.y);
+    }
 
     private void Start()
     {

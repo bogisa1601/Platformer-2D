@@ -7,12 +7,19 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     [field: SerializeField] public Slider HealthSlider { get; private set; }
-    
+
     [field: SerializeField] public float MaxHealth { get; private set; }
-    
-    [field: SerializeField] public float LerpDuration { get; private set; }
+
+    [field: SerializeField] public float ModifyHealthLerpDuration { get; private set; }
+    [field: SerializeField] public float HealhtRecoveryDuration { get; private set; }
 
     [field: SerializeField] public float CurrentHealth { get; private set; }
+
+    private Coroutine modifyHealthCoroutine;
+
+    private Coroutine recoverHealthCoroutine;
+
+    private bool stopRecover = false;
 
     private void Start()
     {
@@ -20,7 +27,15 @@ public class Health : MonoBehaviour
 
         HealthSlider.value = CurrentHealth / MaxHealth;
     }
-    
+
+    private void Update()
+    {
+        if (modifyHealthCoroutine == null && recoverHealthCoroutine == null)
+        {
+            RecoverHealth(HealthSlider.value, 1);
+        }
+    }
+
     public void ModifyHealth(float amount)
     {
         CurrentHealth += amount;
@@ -29,15 +44,15 @@ public class Health : MonoBehaviour
 
         //HealthSlider.value = _currentHealth / MaxHealth;
 
-        LerpHealth(HealthSlider.value, CurrentHealth / MaxHealth);
-        
+        ModifyHealth(HealthSlider.value, CurrentHealth / MaxHealth);
+
         if (CurrentHealth <= 0)
         {
-            Destroy(gameObject,LerpDuration);
+            Destroy(gameObject, ModifyHealthLerpDuration);
             GetComponent<PlayerMovement>().enabled = false;
         }
     }
-    
+
     private void ConfigCurrentHealth()
     {
         if (CurrentHealth >= MaxHealth)
@@ -52,39 +67,84 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void LerpHealth(float from, float to)
+    private void ModifyHealth(float from, float to)
     {
+        if (recoverHealthCoroutine != null)
+        {
+            //stopRecover = true;
+            StopCoroutine(recoverHealthCoroutine);
+            recoverHealthCoroutine = null;
+        }
+
+        modifyHealthCoroutine = StartCoroutine(ModifyHealthInternal(from, to, ModifyHealthLerpDuration));
+
+    }
+
+    private void RecoverHealth(float from, float to)
+    {
+        recoverHealthCoroutine = StartCoroutine(RecoverHealthInternal(from, to, HealhtRecoveryDuration));
+    }
+
+    private IEnumerator ModifyHealthInternal(float from, float to, float duration)
+    {
+
         if (to <= 0)
         {
             to -= 0.1f;
         }
-        
-        StartCoroutine(LerpHealthInternal());
 
-        IEnumerator LerpHealthInternal()
+
+        float timeElapsed = 0;
+
+        while (timeElapsed < duration)
         {
-            float timeElapsed = 0;
-            
-            while (timeElapsed < LerpDuration)
+            HealthSlider.value = Mathf.Lerp(from, to, timeElapsed / duration);
+
+            if (from < to)
             {
-                HealthSlider.value = Mathf.Lerp(from, to, timeElapsed / LerpDuration);
-
-                if (from < to)
-                {
-                    CurrentHealth = HealthSlider.value * MaxHealth;
-                }
-                
-                timeElapsed += Time.deltaTime;
-
-                yield return null;
+                CurrentHealth = HealthSlider.value * MaxHealth;
             }
 
-            LerpHealth(HealthSlider.value, 1);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
         }
+        modifyHealthCoroutine = null;
+
+
     }
 
+    private IEnumerator RecoverHealthInternal(float from, float to, float duration)
+    {
+
+        if (to <= 0)
+        {
+            to -= 0.1f;
+        }
 
 
+        float timeElapsed = 0;
 
+        while (timeElapsed < duration)
+        {
+            HealthSlider.value = Mathf.Lerp(from, to, timeElapsed / duration);
 
+            if (from < to)
+            {
+                CurrentHealth = HealthSlider.value * MaxHealth;
+            }
+
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        recoverHealthCoroutine = null; 
+
+    }
 }
+
+
+
+
+
+

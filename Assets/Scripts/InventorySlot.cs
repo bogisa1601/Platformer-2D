@@ -64,6 +64,22 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
+
+        if(EventSystem.current.IsPointerOverGameObject() == false)
+        {
+            GameplayEvents.RaiseOnRemoveItemFromInventory(Collectable);
+
+            Collectable = null;
+            IconImage.sprite = null;
+            IconImage.enabled = false;
+
+            Inventory.DragNDropIconImageHolder.gameObject.SetActive(false);
+            Inventory.DragNDropIconImageHolder.sprite = null;
+            Inventory.MousePickedUpSlot = null;
+
+            return;
+        }
+
         if(Inventory.MouseHoveredSlot != null )
         {
             var spriteToExchange = IconImage.sprite;
@@ -120,6 +136,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         Collectable = null;
         IconImage.sprite = null;
         IconImage.enabled = false;
-        Inventory.MousePickedUpSlot = null;
+        Inventory.MousePickedUpSlot = null; 
     }
 }
