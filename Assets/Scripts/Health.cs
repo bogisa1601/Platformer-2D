@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [field: SerializeField] public Slider HealthSlider { get; private set; }
+    [field: SerializeField] public Slider HealthSlider { get; protected set; }
 
-    [field: SerializeField] public float MaxHealth { get; private set; }
+    [field: SerializeField] public float MaxHealth { get; protected set; }
 
-    [field: SerializeField] public float ModifyHealthLerpDuration { get; private set; }
-    [field: SerializeField] public float HealhtRecoveryDuration { get; private set; }
+    [field: SerializeField] public float ModifyHealthLerpDuration { get; protected set; }
+    [field: SerializeField] public float HealhtRecoveryDuration { get; protected set; }
 
-    [field: SerializeField] public float CurrentHealth { get; private set; }
+    [field: SerializeField] public float CurrentHealth { get; protected set; }
 
     private Coroutine modifyHealthCoroutine;
 
@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
         HealthSlider.value = CurrentHealth / MaxHealth;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (modifyHealthCoroutine == null && recoverHealthCoroutine == null)
         {
@@ -36,13 +36,11 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void ModifyHealth(float amount)
+    public virtual void ModifyHealth(float amount)
     {
         CurrentHealth += amount;
 
         ConfigCurrentHealth();
-
-        //HealthSlider.value = _currentHealth / MaxHealth;
 
         ModifyHealth(HealthSlider.value, CurrentHealth / MaxHealth);
 
@@ -53,7 +51,14 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void ConfigCurrentHealth()
+    public void SetHealth(float amount)
+    {
+        CurrentHealth = amount;
+        ConfigCurrentHealth();
+        HealthSlider.value = CurrentHealth / MaxHealth;
+    }
+
+    protected void ConfigCurrentHealth()
     {
         if (CurrentHealth >= MaxHealth)
         {
@@ -67,7 +72,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void ModifyHealth(float from, float to)
+    protected virtual void ModifyHealth(float from, float to)
     {
         if (recoverHealthCoroutine != null)
         {

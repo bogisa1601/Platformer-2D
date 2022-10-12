@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class WeaponTrajectory : MonoBehaviour
@@ -32,6 +33,7 @@ public class WeaponTrajectory : MonoBehaviour
         if (trajectoryPoints.Count <= 0) return;
         foreach(var point in trajectoryPoints)
         {
+            if (point == null) continue;
             point.gameObject.SetActive(show);
         }
     }

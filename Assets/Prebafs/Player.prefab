@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b87799ad5dd17418edacf18b598c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Health>k__BackingField: 500
+  <Health>k__BackingField: {fileID: 5417172259260751432}
 --- !u!114 &5417172259260751432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,7 +390,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <HealthSlider>k__BackingField: {fileID: 0}
   <MaxHealth>k__BackingField: 500
-  <LerpDuration>k__BackingField: 1
+  <ModifyHealthLerpDuration>k__BackingField: 0.5
+  <HealhtRecoveryDuration>k__BackingField: 5
   <CurrentHealth>k__BackingField: 0
 --- !u!114 &5584255875993648713
 MonoBehaviour:
