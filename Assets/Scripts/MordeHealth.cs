@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MordeHealth : Health
 {
- 
+    [field: SerializeField] public BoxCollider2D OpenDoorsTrigger { get; set; }
+
     protected override void Update()
     {
         return;
@@ -21,6 +22,7 @@ public class MordeHealth : Health
         if (CurrentHealth <= 0)
         {
             //death fx
+            OpenDoorsTrigger.enabled = true;
             Destroy(gameObject);
         }
     }

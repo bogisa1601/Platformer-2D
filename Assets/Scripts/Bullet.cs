@@ -20,6 +20,41 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle,Vector3.forward);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (collision.gameObject.TryGetComponent(out PatrollingEnemy enemy))
+        {
+            enemy.Health -= damage;
+
+            if (enemy.Health <= 0)
+            {
+                Destroy(enemy.gameObject);
+            }
+
+            Destroy(gameObject);
+        }
+        
+        if (collision.gameObject.TryGetComponent(out Health mordeHealth))
+        {
+            mordeHealth.ModifyHealth(- damage);
+
+            if (mordeHealth.CurrentHealth <= 0)
+            {
+                Destroy(mordeHealth.gameObject);
+            }
+
+            Destroy(gameObject);
+            return;
+        }
+
+    }
+
 
     private void OnCollisionEnter2D(Collision2D col)
     {
@@ -28,32 +63,38 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         
-/*
-        PatrollingEnemy enemy = col.gameObject.GetComponent<PatrollingEnemy>();
         
-        if (enemy != null)
+
+        if (col.gameObject.TryGetComponent(out Health mordeHealth))
         {
-            enemy.Health -= damage;
+            mordeHealth.ModifyHealth(-damage);
 
-            if (enemy.Health <= 0)
+            if (mordeHealth.CurrentHealth <= 0)
             {
-                Destroy(enemy.gameObject);
+                Destroy(mordeHealth.gameObject);
             }
-        }
-*/
 
-        if (col.gameObject.TryGetComponent(out PatrollingEnemy enemy))
-        {
-            enemy.Health -= damage;
-
-            if (enemy.Health <= 0)
-            {
-                Destroy(enemy.gameObject);
-            }
-            
             Destroy(gameObject);
+            return;
         }
+
+        /*
+                PatrollingEnemy enemy = col.gameObject.GetComponent<PatrollingEnemy>();
+
+                if (enemy != null)
+                {
+                    enemy.Health -= damage;
+
+                    if (enemy.Health <= 0)
+                    {
+                        Destroy(enemy.gameObject);
+                    }
+                }
+        */
+
+
     }
     
     

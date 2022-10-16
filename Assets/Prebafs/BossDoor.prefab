@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5677427459001556496}
   - component: {fileID: 5677427459001556497}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: DoorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5677427459796416098}
   - component: {fileID: 5677427459796416099}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: s1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 5677427459828545387}
   - component: {fileID: 5677427459828545386}
   - component: {fileID: 5677427459828545385}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: BossDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5677427459828705590}
   - component: {fileID: 5677427459828705591}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: s2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
