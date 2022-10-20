@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MordeBoss : MonoBehaviour
+public class MordeBoss : Boss
 {
-    [field:SerializeField] public float MoveSpeed { get; set; }
-    [field:SerializeField] public float Damage { get; set; }
+    
     [field:SerializeField] public float AttackThreshold { get; set; }
     [field:SerializeField] public float MoveThreshold { get; set; }
     [field:SerializeField] public Animator Animator { get; set; }
 
     [field:SerializeField] public Transform AttackPoint { get; set; }   
-    [field:SerializeField] public LayerMask PlayerLayerMask {get; set; }
+   
     [field:SerializeField] public float AttackRadius { get; set; }
 
 
