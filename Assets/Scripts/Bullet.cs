@@ -44,11 +44,7 @@ public class Bullet : MonoBehaviour
         {
             mordeHealth.ModifyHealth(- damage);
 
-            if (mordeHealth.CurrentHealth <= 0)
-            {
-                Destroy(mordeHealth.gameObject);
-            }
-
+           
             Destroy(gameObject);
             return;
         }

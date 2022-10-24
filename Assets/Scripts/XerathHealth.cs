@@ -10,6 +10,10 @@ public class XerathHealth : Health
 
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [SerializeField] private XerathShooting xerathShooting;
+
+    [SerializeField] private GameObject healthCanvas;
+
 
 
     public override void ModifyHealth(float amount)
@@ -23,6 +27,9 @@ public class XerathHealth : Health
         if (CurrentHealth <= 0)
         {
             spriteRenderer.enabled = false;
+            healthCanvas.gameObject.SetActive(false);
+
+            xerathShooting.StopShooting();
 
             deathFX.Play();
             exitPortal.gameObject.SetActive(true);
