@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &942079220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 942079221}
+  - component: {fileID: 942079222}
+  m_Layer: 11
+  m_Name: GroundCheckCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &942079221
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942079220}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5372190286391869590}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &942079222
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942079220}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0480299, y: 0.6724057}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.8251019, y: 0.80788517}
+  m_EdgeRadius: 0
 --- !u!1 &1888643254
 GameObject:
   m_ObjectHideFlags: 0
@@ -20020,6 +20078,7 @@ GameObject:
   - component: {fileID: 5372190286391869588}
   - component: {fileID: 1871850955}
   - component: {fileID: 1871850956}
+  - component: {fileID: 465160025}
   m_Layer: 11
   m_Name: MonD_01
   m_TagString: Untagged
@@ -20043,6 +20102,7 @@ Transform:
   - {fileID: 5372190285629140722}
   - {fileID: 5372190285707302307}
   - {fileID: 1888643257}
+  - {fileID: 942079221}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20139,7 +20199,7 @@ MonoBehaviour:
   - {fileID: 0}
   waitTime: 0
   startWaitTime: 3
-  numberOfProjectiles: 6
+  numberOfProjectiles: 10
   projectileForce: 10
   finalBossProjectilePrefab: {fileID: 1035547756737762440, guid: bf9df989b98621844b4f6917df7927ba, type: 3}
   firePoint: {fileID: 8399020994900554110}
@@ -20149,6 +20209,37 @@ MonoBehaviour:
   animator: {fileID: 5372190286391869593}
   waitTimePerProjectile: 0.1
   waitTimeWhenCircleIsOver: 3
+  cc2d: {fileID: 0}
+  playerPhase2MoveToPosition: {fileID: 0}
+  moveToPositionSpeed: 5
+  groundCheckCollider: {fileID: 942079222}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  stopShooting: 0
+  canDash: 0
+  isGrounded: 0
+--- !u!50 &465160025
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5372190286391869592}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5372190286485526342
 GameObject:
   m_ObjectHideFlags: 0
