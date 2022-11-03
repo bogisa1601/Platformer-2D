@@ -30,10 +30,10 @@ public class Health : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (modifyHealthCoroutine == null && recoverHealthCoroutine == null)
+       /* if (modifyHealthCoroutine == null && recoverHealthCoroutine == null)
         {
             RecoverHealth(HealthSlider.value, 1);
-        }
+        }*/
     }
 
     public virtual void ModifyHealth(float amount)

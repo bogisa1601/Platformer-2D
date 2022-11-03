@@ -1,5 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,6 +24,8 @@ public class FinalBossPhases : MonoBehaviour
     [SerializeField] private GameObject finalBossProjectilePrefab;
 
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform phase2FirePoint;
+
 
     [SerializeField] private float radiusStart;
     [SerializeField] private float radiusEnd;
@@ -43,20 +48,28 @@ public class FinalBossPhases : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
 
-    [SerializeField] private Transform bossTargetToDashTo1;
-    [SerializeField] private Transform bossTargetToDashTo2;
-
     [SerializeField] private float dashSpeed;
 
     [SerializeField] private Rigidbody2D rb2d;
 
+    [SerializeField] private GameObject finalBoss;
+
+    [SerializeField] private GameObject finalBossBulletPhase2;
+
     public bool stopShooting = false;
+
+    public Vector3 positionToDashTo;
+
+    public Vector3 positionToDashToPhase3;
+
+    public bool isMoving = false;
+
 
     public bool canDash = true;
 
     public bool isGrounded = false;
 
-    
+
     private int randomSpot;
 
     private float healthDivision = 3;
@@ -64,11 +77,9 @@ public class FinalBossPhases : MonoBehaviour
     private void Start()
     {
         StartCoroutine(FireProjectiles());
-    }
-        
 
-        
-    
+    }
+
 
     public void StopShooting()
     {
@@ -77,25 +88,36 @@ public class FinalBossPhases : MonoBehaviour
 
     private void Update()
     {
-       PlayerMovement();
-        if (health.CurrentHealth <= (health.MaxHealth / healthDivision) * 2)
+        PlayerMovement();
+        if (health.CurrentHealth <= (health.MaxHealth / healthDivision) * 2 && health.CurrentHealth > (health.MaxHealth / healthDivision))
         {
+            Debug.Log("Phase 2 starting");
             MovePlayerTowardsPoint();
-            stopShooting = true;
-            while(health.CurrentHealth <= (health.MaxHealth / healthDivision) * 2)
+
+            if (transform.position == playerPhase2MoveToPosition.position)
             {
-                StartCoroutine(Dash());
+                StartCoroutine(DashPhase());
             }
+        }
+
+        if (health.CurrentHealth <= (health.MaxHealth / healthDivision))
+        {
+            Debug.Log("Phase 3 starting");
+            StopCoroutine(DashPhase());
+            StartCoroutine(Phase3());
+
         }
 
     }
 
-   
+
 
     public void PlayerMovement()
     {
-        if(health.CurrentHealth > (health.MaxHealth / healthDivision) * 2 && health.CurrentHealth > (health.MaxHealth / healthDivision))
-        transform.position = Vector2.MoveTowards(transform.position, moveSpots[randomSpot].position, moveSpeed * Time.deltaTime);
+        if (health.CurrentHealth > (health.MaxHealth / healthDivision) * 2 && health.CurrentHealth > (health.MaxHealth / healthDivision))
+
+            transform.position = Vector2.MoveTowards(transform.position, moveSpots[randomSpot].position, Random.Range(10f, 15f) * Time.deltaTime);
+
 
         if (Vector2.Distance(transform.position, moveSpots[randomSpot].position) < 0.2f)
         {
@@ -110,11 +132,11 @@ public class FinalBossPhases : MonoBehaviour
             }
         }
 
-       
-                    
+
+
     }
-    
-    
+
+
 
     private IEnumerator FireProjectiles()
     {
@@ -139,7 +161,7 @@ public class FinalBossPhases : MonoBehaviour
 
                 angle += angleStep;
 
-                if(stopShooting == true) yield break;
+                if (stopShooting == true) yield break;
 
                 yield return new WaitForSeconds(waitTimePerProjectile);
             }
@@ -155,30 +177,45 @@ public class FinalBossPhases : MonoBehaviour
     }
 
 
-    private IEnumerator Dash()
+    private IEnumerator DashPhase()
     {
+        animator.SetBool("walk", true);
+        finalBoss.transform.DOMove(positionToDashTo, 75f * Time.deltaTime).SetLoops(1, LoopType.Yoyo).SetDelay(2f);
 
-
-        if (groundCheckCollider.IsTouchingLayers(groundLayer))
+        if (transform.position == moveSpots[5].position || transform.position == positionToDashTo)
         {
-            isGrounded = true;
-            animator.SetBool("walk", true);
-            transform.position = Vector2.MoveTowards(transform.position, bossTargetToDashTo1.position, dashSpeed * Time.deltaTime);
+            animator.SetBool("walk", false);
+        }
+        yield return null;
+    }
 
+    private IEnumerator Phase3()
+    {
+        MovePlayerTowardsPoint();
+        if (transform.position == moveSpots[5].position)
+        {
+            transform.position = moveSpots[5].position;
+            transform.position = Vector2.MoveTowards(transform.position, positionToDashToPhase3, 25f * Time.deltaTime);
+        }
+        if(transform.position == positionToDashToPhase3)
+        {
+            
+            stopShooting = true;
+            animator.SetTrigger("attack");
         }
 
-        yield return new WaitForSeconds(2f);
-
-        if(groundCheckCollider.IsTouchingLayers(groundLayer))
-        {
-            isGrounded = true;
-              transform.position = Vector2.MoveTowards(transform.position, bossTargetToDashTo2.position, dashSpeed * Time.deltaTime);
-        }
-
-        
+        yield return null ;
     }
 
     
-
+    
     
 }
+
+
+    
+
+
+
+    
+
